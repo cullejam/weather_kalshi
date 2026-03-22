@@ -1,0 +1,319 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#"
+    }
+  ],
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          -118.3725,
+          33.9323
+        ],
+        [
+          -118.3772,
+          33.9545
+        ],
+        [
+          -118.404,
+          33.9506
+        ],
+        [
+          -118.3993,
+          33.9284
+        ],
+        [
+          -118.3725,
+          33.9323
+        ]
+      ]
+    ]
+  },
+  "properties": {
+    "units": "us",
+    "forecastGenerator": "BaselineForecastGenerator",
+    "generatedAt": "2026-03-22T15:59:01+00:00",
+    "updateTime": "2026-03-22T15:52:19+00:00",
+    "validTimes": "2026-03-22T09:00:00+00:00/P7DT16H",
+    "elevation": {
+      "unitCode": "wmoUnit:m",
+      "value": 29.8704
+    },
+    "periods": [
+      {
+        "number": 1,
+        "name": "Today",
+        "startTime": "2026-03-22T08:00:00-07:00",
+        "endTime": "2026-03-22T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 73,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 10 mph",
+        "windDirection": "SW",
+        "icon": "https://api.weather.gov/icons/land/day/fog?size=medium",
+        "shortForecast": "Patchy Fog",
+        "detailedForecast": "Patchy fog. Partly sunny, with a high near 73. Southwest wind 0 to 10 mph."
+      },
+      {
+        "number": 2,
+        "name": "Tonight",
+        "startTime": "2026-03-22T18:00:00-07:00",
+        "endTime": "2026-03-23T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 58,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 10 mph",
+        "windDirection": "S",
+        "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+        "shortForecast": "Patchy Fog",
+        "detailedForecast": "Patchy fog. Cloudy, with a low around 58. South wind 0 to 10 mph."
+      },
+      {
+        "number": 3,
+        "name": "Monday",
+        "startTime": "2026-03-23T06:00:00-07:00",
+        "endTime": "2026-03-23T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 80,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "WSW",
+        "icon": "https://api.weather.gov/icons/land/day/fog?size=medium",
+        "shortForecast": "Patchy Fog",
+        "detailedForecast": "Patchy fog. Partly sunny, with a high near 80. West southwest wind 0 to 15 mph."
+      },
+      {
+        "number": 4,
+        "name": "Monday Night",
+        "startTime": "2026-03-23T18:00:00-07:00",
+        "endTime": "2026-03-24T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 59,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 10 mph",
+        "windDirection": "S",
+        "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+        "shortForecast": "Patchy Fog",
+        "detailedForecast": "Patchy fog before 5am. Mostly cloudy, with a low around 59. South wind 0 to 10 mph."
+      },
+      {
+        "number": 5,
+        "name": "Tuesday",
+        "startTime": "2026-03-24T06:00:00-07:00",
+        "endTime": "2026-03-24T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 82,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 10 mph",
+        "windDirection": "SW",
+        "icon": "https://api.weather.gov/icons/land/day/few?size=medium",
+        "shortForecast": "Sunny",
+        "detailedForecast": "Sunny, with a high near 82. Southwest wind 0 to 10 mph."
+      },
+      {
+        "number": 6,
+        "name": "Tuesday Night",
+        "startTime": "2026-03-24T18:00:00-07:00",
+        "endTime": "2026-03-25T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 59,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 10 mph",
+        "windDirection": "SW",
+        "icon": "https://api.weather.gov/icons/land/night/sct?size=medium",
+        "shortForecast": "Partly Cloudy",
+        "detailedForecast": "Partly cloudy, with a low around 59."
+      },
+      {
+        "number": 7,
+        "name": "Wednesday",
+        "startTime": "2026-03-25T06:00:00-07:00",
+        "endTime": "2026-03-25T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 82,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "W",
+        "icon": "https://api.weather.gov/icons/land/day/few?size=medium",
+        "shortForecast": "Sunny",
+        "detailedForecast": "Sunny, with a high near 82."
+      },
+      {
+        "number": 8,
+        "name": "Wednesday Night",
+        "startTime": "2026-03-25T18:00:00-07:00",
+        "endTime": "2026-03-26T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 59,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "WSW",
+        "icon": "https://api.weather.gov/icons/land/night/few?size=medium",
+        "shortForecast": "Mostly Clear",
+        "detailedForecast": "Mostly clear, with a low around 59."
+      },
+      {
+        "number": 9,
+        "name": "Thursday",
+        "startTime": "2026-03-26T06:00:00-07:00",
+        "endTime": "2026-03-26T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 83,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "WSW",
+        "icon": "https://api.weather.gov/icons/land/day/sct?size=medium",
+        "shortForecast": "Mostly Sunny",
+        "detailedForecast": "Mostly sunny, with a high near 83."
+      },
+      {
+        "number": 10,
+        "name": "Thursday Night",
+        "startTime": "2026-03-26T18:00:00-07:00",
+        "endTime": "2026-03-27T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 60,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 10 mph",
+        "windDirection": "WSW",
+        "icon": "https://api.weather.gov/icons/land/night/fog?size=medium",
+        "shortForecast": "Patchy Fog",
+        "detailedForecast": "Patchy fog after 11pm. Mostly cloudy, with a low around 60."
+      },
+      {
+        "number": 11,
+        "name": "Friday",
+        "startTime": "2026-03-27T06:00:00-07:00",
+        "endTime": "2026-03-27T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 82,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "WSW",
+        "icon": "https://api.weather.gov/icons/land/day/fog/sct?size=medium",
+        "shortForecast": "Patchy Fog then Mostly Sunny",
+        "detailedForecast": "Patchy fog before 11am. Mostly sunny, with a high near 82."
+      },
+      {
+        "number": 12,
+        "name": "Friday Night",
+        "startTime": "2026-03-27T18:00:00-07:00",
+        "endTime": "2026-03-28T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 60,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "SW",
+        "icon": "https://api.weather.gov/icons/land/night/few?size=medium",
+        "shortForecast": "Mostly Clear",
+        "detailedForecast": "Mostly clear, with a low around 60."
+      },
+      {
+        "number": 13,
+        "name": "Saturday",
+        "startTime": "2026-03-28T06:00:00-07:00",
+        "endTime": "2026-03-28T18:00:00-07:00",
+        "isDaytime": true,
+        "temperature": 79,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "WSW",
+        "icon": "https://api.weather.gov/icons/land/day/sct?size=medium",
+        "shortForecast": "Mostly Sunny",
+        "detailedForecast": "Mostly sunny, with a high near 79."
+      },
+      {
+        "number": 14,
+        "name": "Saturday Night",
+        "startTime": "2026-03-28T18:00:00-07:00",
+        "endTime": "2026-03-29T06:00:00-07:00",
+        "isDaytime": false,
+        "temperature": 61,
+        "temperatureUnit": "F",
+        "temperatureTrend": null,
+        "probabilityOfPrecipitation": {
+          "unitCode": "wmoUnit:percent",
+          "value": 0
+        },
+        "windSpeed": "0 to 15 mph",
+        "windDirection": "SW",
+        "icon": "https://api.weather.gov/icons/land/night/few?size=medium",
+        "shortForecast": "Mostly Clear",
+        "detailedForecast": "Mostly clear, with a low around 61."
+      }
+    ]
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "s": "https://schema.org/",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#",
+      "geometry": {
+        "@id": "s:GeoCoordinates",
+        "@type": "geo:wktLiteral"
+      },
+      "city": "s:addressLocality",
+      "state": "s:addressRegion",
+      "distance": {
+        "@id": "s:Distance",
+        "@type": "s:QuantitativeValue"
+      },
+      "bearing": {
+        "@type": "s:QuantitativeValue"
+      },
+      "value": {
+        "@id": "s:value"
+      },
+      "unitCode": {
+        "@id": "s:unitCode",
+        "@type": "@id"
+      },
+      "forecastOffice": {
+        "@type": "@id"
+      },
+      "forecastGridData": {
+        "@type": "@id"
+      },
+      "publicZone": {
+        "@type": "@id"
+      },
+      "county": {
+        "@type": "@id"
+      }
+    }
+  ],
+  "id": "https://api.weather.gov/points/41.9786,-87.9048",
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -87.9048,
+      41.9786
+    ]
+  },
+  "properties": {
+    "@id": "https://api.weather.gov/points/41.9786,-87.9048",
+    "@type": "wx:Point",
+    "cwa": "LOT",
+    "type": "land",
+    "forecastOffice": "https://api.weather.gov/offices/LOT",
+    "gridId": "LOT",
+    "gridX": 66,
+    "gridY": 77,
+    "forecast": "https://api.weather.gov/gridpoints/LOT/66,77/forecast",
+    "forecastHourly": "https://api.weather.gov/gridpoints/LOT/66,77/forecast/hourly",
+    "forecastGridData": "https://api.weather.gov/gridpoints/LOT/66,77",
+    "observationStations": "https://api.weather.gov/gridpoints/LOT/66,77/stations",
+    "relativeLocation": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -87.871739,
+          41.988977
+        ]
+      },
+      "properties": {
+        "city": "Rosemont",
+        "state": "IL",
+        "distance": {
+          "unitCode": "wmoUnit:m",
+          "value": 2966.2857419388
+        },
+        "bearing": {
+          "unitCode": "wmoUnit:degree_(angle)",
+          "value": 247
+        }
+      }
+    },
+    "forecastZone": "https://api.weather.gov/zones/forecast/ILZ104",
+    "county": "https://api.weather.gov/zones/county/ILC031",
+    "fireWeatherZone": "https://api.weather.gov/zones/fire/ILZ014",
+    "timeZone": "America/Chicago",
+    "radarStation": "KLOT",
+    "astronomicalData": {
+      "sunrise": "2026-03-21T06:51:09-05:00",
+      "sunset": "2026-03-21T19:06:14-05:00",
+      "transit": "2026-03-21T12:58:42-05:00",
+      "civilTwilightBegin": "2026-03-21T06:24:44-05:00",
+      "civilTwilightEnd": "2026-03-21T19:32:40-05:00",
+      "nauticalTwilightBegin": "2026-03-21T05:52:03-05:00",
+      "nauticalTwilightEnd": "2026-03-21T20:05:21-05:00",
+      "astronomicalTwilightBegin": "2026-03-21T05:18:40-05:00",
+      "astronomicalTwilightEnd": "2026-03-21T20:38:44-05:00"
+    },
+    "nwr": {
+      "transmitter": "KWO39",
+      "sameCode": "017031",
+      "areaBroadcast": "https://api.weather.gov/radio/KWO39/broadcast",
+      "pointBroadcast": "https://api.weather.gov/points/41.9786,-87.9048/radio"
+    }
+  }
+}

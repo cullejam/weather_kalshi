@@ -1,0 +1,112 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "s": "https://schema.org/",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#",
+      "geometry": {
+        "@id": "s:GeoCoordinates",
+        "@type": "geo:wktLiteral"
+      },
+      "city": "s:addressLocality",
+      "state": "s:addressRegion",
+      "distance": {
+        "@id": "s:Distance",
+        "@type": "s:QuantitativeValue"
+      },
+      "bearing": {
+        "@type": "s:QuantitativeValue"
+      },
+      "value": {
+        "@id": "s:value"
+      },
+      "unitCode": {
+        "@id": "s:unitCode",
+        "@type": "@id"
+      },
+      "forecastOffice": {
+        "@type": "@id"
+      },
+      "forecastGridData": {
+        "@type": "@id"
+      },
+      "publicZone": {
+        "@type": "@id"
+      },
+      "county": {
+        "@type": "@id"
+      }
+    }
+  ],
+  "id": "https://api.weather.gov/points/30.1975,-97.6664",
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -97.6664,
+      30.1975
+    ]
+  },
+  "properties": {
+    "@id": "https://api.weather.gov/points/30.1975,-97.6664",
+    "@type": "wx:Point",
+    "cwa": "EWX",
+    "type": "land",
+    "forecastOffice": "https://api.weather.gov/offices/EWX",
+    "gridId": "EWX",
+    "gridX": 159,
+    "gridY": 88,
+    "forecast": "https://api.weather.gov/gridpoints/EWX/159,88/forecast",
+    "forecastHourly": "https://api.weather.gov/gridpoints/EWX/159,88/forecast/hourly",
+    "forecastGridData": "https://api.weather.gov/gridpoints/EWX/159,88",
+    "observationStations": "https://api.weather.gov/gridpoints/EWX/159,88/stations",
+    "relativeLocation": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.583273,
+          30.24496
+        ]
+      },
+      "properties": {
+        "city": "Hornsby Bend",
+        "state": "TX",
+        "distance": {
+          "unitCode": "wmoUnit:m",
+          "value": 9573.0291161767
+        },
+        "bearing": {
+          "unitCode": "wmoUnit:degree_(angle)",
+          "value": 236
+        }
+      }
+    },
+    "forecastZone": "https://api.weather.gov/zones/forecast/TXZ192",
+    "county": "https://api.weather.gov/zones/county/TXC453",
+    "fireWeatherZone": "https://api.weather.gov/zones/fire/TXZ192",
+    "timeZone": "America/Chicago",
+    "radarStation": "KGRK",
+    "astronomicalData": {
+      "sunrise": "2026-03-22T07:30:21-05:00",
+      "sunset": "2026-03-22T19:44:31-05:00",
+      "transit": "2026-03-22T13:37:26-05:00",
+      "civilTwilightBegin": "2026-03-22T07:07:39-05:00",
+      "civilTwilightEnd": "2026-03-22T20:07:14-05:00",
+      "nauticalTwilightBegin": "2026-03-22T06:39:42-05:00",
+      "nauticalTwilightEnd": "2026-03-22T20:35:10-05:00",
+      "astronomicalTwilightBegin": "2026-03-22T06:11:30-05:00",
+      "astronomicalTwilightEnd": "2026-03-22T21:03:23-05:00"
+    },
+    "nwr": {
+      "transmitter": "WXK27",
+      "sameCode": "048453",
+      "areaBroadcast": "https://api.weather.gov/radio/WXK27/broadcast",
+      "pointBroadcast": "https://api.weather.gov/points/30.1975,-97.6664/radio"
+    }
+  }
+}

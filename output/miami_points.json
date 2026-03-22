@@ -1,0 +1,112 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "s": "https://schema.org/",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#",
+      "geometry": {
+        "@id": "s:GeoCoordinates",
+        "@type": "geo:wktLiteral"
+      },
+      "city": "s:addressLocality",
+      "state": "s:addressRegion",
+      "distance": {
+        "@id": "s:Distance",
+        "@type": "s:QuantitativeValue"
+      },
+      "bearing": {
+        "@type": "s:QuantitativeValue"
+      },
+      "value": {
+        "@id": "s:value"
+      },
+      "unitCode": {
+        "@id": "s:unitCode",
+        "@type": "@id"
+      },
+      "forecastOffice": {
+        "@type": "@id"
+      },
+      "forecastGridData": {
+        "@type": "@id"
+      },
+      "publicZone": {
+        "@type": "@id"
+      },
+      "county": {
+        "@type": "@id"
+      }
+    }
+  ],
+  "id": "https://api.weather.gov/points/25.7959,-80.287",
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -80.287,
+      25.7959
+    ]
+  },
+  "properties": {
+    "@id": "https://api.weather.gov/points/25.7959,-80.287",
+    "@type": "wx:Point",
+    "cwa": "MFL",
+    "type": "land",
+    "forecastOffice": "https://api.weather.gov/offices/MFL",
+    "gridId": "MFL",
+    "gridX": 106,
+    "gridY": 51,
+    "forecast": "https://api.weather.gov/gridpoints/MFL/106,51/forecast",
+    "forecastHourly": "https://api.weather.gov/gridpoints/MFL/106,51/forecast/hourly",
+    "forecastGridData": "https://api.weather.gov/gridpoints/MFL/106,51",
+    "observationStations": "https://api.weather.gov/gridpoints/MFL/106,51/stations",
+    "relativeLocation": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.297484,
+          25.809513
+        ]
+      },
+      "properties": {
+        "city": "Virginia Gardens",
+        "state": "FL",
+        "distance": {
+          "unitCode": "wmoUnit:m",
+          "value": 1841.9603233623
+        },
+        "bearing": {
+          "unitCode": "wmoUnit:degree_(angle)",
+          "value": 145
+        }
+      }
+    },
+    "forecastZone": "https://api.weather.gov/zones/forecast/FLZ074",
+    "county": "https://api.weather.gov/zones/county/FLC086",
+    "fireWeatherZone": "https://api.weather.gov/zones/fire/FLZ074",
+    "timeZone": "America/New_York",
+    "radarStation": "KAMX",
+    "astronomicalData": {
+      "sunrise": "2026-03-22T07:21:26-04:00",
+      "sunset": "2026-03-22T19:34:27-04:00",
+      "transit": "2026-03-22T13:27:56-04:00",
+      "civilTwilightBegin": "2026-03-22T06:59:38-04:00",
+      "civilTwilightEnd": "2026-03-22T19:56:14-04:00",
+      "nauticalTwilightBegin": "2026-03-22T06:32:52-04:00",
+      "nauticalTwilightEnd": "2026-03-22T20:23:00-04:00",
+      "astronomicalTwilightBegin": "2026-03-22T06:05:55-04:00",
+      "astronomicalTwilightEnd": "2026-03-22T20:49:58-04:00"
+    },
+    "nwr": {
+      "transmitter": "WZ2531",
+      "sameCode": "012086",
+      "areaBroadcast": "https://api.weather.gov/radio/WZ2531/broadcast",
+      "pointBroadcast": "https://api.weather.gov/points/25.7959,-80.287/radio"
+    }
+  }
+}

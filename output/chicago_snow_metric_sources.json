@@ -1,0 +1,12 @@
+{
+  "metric": {
+    "metric_key": "snow_total_in",
+    "unit": "in"
+  },
+  "primary_count": 0,
+  "alt_count": 0,
+  "open_count": 7,
+  "observed_primary_count": 21,
+  "observed_alt_count": 0,
+  "observed_open_count": 21
+}

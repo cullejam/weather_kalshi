@@ -1,0 +1,112 @@
+{
+  "@context": [
+    "https://geojson.org/geojson-ld/geojson-context.jsonld",
+    {
+      "@version": "1.1",
+      "wx": "https://api.weather.gov/ontology#",
+      "s": "https://schema.org/",
+      "geo": "http://www.opengis.net/ont/geosparql#",
+      "unit": "http://codes.wmo.int/common/unit/",
+      "@vocab": "https://api.weather.gov/ontology#",
+      "geometry": {
+        "@id": "s:GeoCoordinates",
+        "@type": "geo:wktLiteral"
+      },
+      "city": "s:addressLocality",
+      "state": "s:addressRegion",
+      "distance": {
+        "@id": "s:Distance",
+        "@type": "s:QuantitativeValue"
+      },
+      "bearing": {
+        "@type": "s:QuantitativeValue"
+      },
+      "value": {
+        "@id": "s:value"
+      },
+      "unitCode": {
+        "@id": "s:unitCode",
+        "@type": "@id"
+      },
+      "forecastOffice": {
+        "@type": "@id"
+      },
+      "forecastGridData": {
+        "@type": "@id"
+      },
+      "publicZone": {
+        "@type": "@id"
+      },
+      "county": {
+        "@type": "@id"
+      }
+    }
+  ],
+  "id": "https://api.weather.gov/points/40.7829,-73.9654",
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      -73.9654,
+      40.7829
+    ]
+  },
+  "properties": {
+    "@id": "https://api.weather.gov/points/40.7829,-73.9654",
+    "@type": "wx:Point",
+    "cwa": "OKX",
+    "type": "land",
+    "forecastOffice": "https://api.weather.gov/offices/OKX",
+    "gridId": "OKX",
+    "gridX": 34,
+    "gridY": 38,
+    "forecast": "https://api.weather.gov/gridpoints/OKX/34,38/forecast",
+    "forecastHourly": "https://api.weather.gov/gridpoints/OKX/34,38/forecast/hourly",
+    "forecastGridData": "https://api.weather.gov/gridpoints/OKX/34,38",
+    "observationStations": "https://api.weather.gov/gridpoints/OKX/34,38/stations",
+    "relativeLocation": {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.004572,
+          40.792784
+        ]
+      },
+      "properties": {
+        "city": "Guttenberg",
+        "state": "NJ",
+        "distance": {
+          "unitCode": "wmoUnit:m",
+          "value": 3476.187666814
+        },
+        "bearing": {
+          "unitCode": "wmoUnit:degree_(angle)",
+          "value": 108
+        }
+      }
+    },
+    "forecastZone": "https://api.weather.gov/zones/forecast/NYZ072",
+    "county": "https://api.weather.gov/zones/county/NYC061",
+    "fireWeatherZone": "https://api.weather.gov/zones/fire/NYZ212",
+    "timeZone": "America/New_York",
+    "radarStation": "KOKX",
+    "astronomicalData": {
+      "sunrise": "2026-03-22T06:53:58-04:00",
+      "sunset": "2026-03-22T19:11:20-04:00",
+      "transit": "2026-03-22T13:02:39-04:00",
+      "civilTwilightBegin": "2026-03-22T06:28:01-04:00",
+      "civilTwilightEnd": "2026-03-22T19:37:17-04:00",
+      "nauticalTwilightBegin": "2026-03-22T05:55:55-04:00",
+      "nauticalTwilightEnd": "2026-03-22T20:09:23-04:00",
+      "astronomicalTwilightBegin": "2026-03-22T05:23:09-04:00",
+      "astronomicalTwilightEnd": "2026-03-22T20:42:09-04:00"
+    },
+    "nwr": {
+      "transmitter": "KWO35",
+      "sameCode": "036061",
+      "areaBroadcast": "https://api.weather.gov/radio/KWO35/broadcast",
+      "pointBroadcast": "https://api.weather.gov/points/40.7829,-73.9654/radio"
+    }
+  }
+}
