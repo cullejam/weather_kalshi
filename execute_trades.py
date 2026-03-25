@@ -56,7 +56,14 @@ class ExecutionConfig:
 
 def load_execution_config() -> ExecutionConfig:
     allowed_raw = os.getenv("TRADE_ALLOWED_MARKET_TYPES", "high,low,rain,snow,wind")
+    if allowed_raw in (None, ""):
+        allowed_raw = "high,low,rain,snow,wind"
     allowed_types = {x.strip().lower() for x in allowed_raw.split(",") if x.strip()}
+    ledger_path = os.getenv("TRADE_LEDGER_PATH", "history/trade_ledger.csv")
+    if ledger_path is not None:
+        ledger_path = ledger_path.strip()
+    if ledger_path in (None, ""):
+        ledger_path = "history/trade_ledger.csv"
     return ExecutionConfig(
         trading_enabled=_env_bool("TRADING_ENABLED", False),
         dry_run=_env_bool("TRADING_DRY_RUN", True),
@@ -72,7 +79,7 @@ def load_execution_config() -> ExecutionConfig:
         allow_no_trade=_env_bool("TRADE_ALLOW_NO_TRADE_FLAG", False),
         allowed_market_types=allowed_types,
         order_ttl_seconds=_safe_int(os.getenv("TRADE_ORDER_TTL_SECONDS", "60"), 60),
-        ledger_path=os.getenv("TRADE_LEDGER_PATH", "history/trade_ledger.csv"),
+        ledger_path=ledger_path,
         price_in_cents=_env_bool("TRADE_PRICE_IN_CENTS", False),
     )
 
