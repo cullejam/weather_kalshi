@@ -8,6 +8,8 @@ import sys
 from datetime import UTC, datetime
 from email.message import EmailMessage
 
+from execute_trades import execute_recommended_trades
+
 try:
     from dotenv import load_dotenv
 except Exception:
@@ -16,16 +18,42 @@ except Exception:
 if load_dotenv is not None:
     load_dotenv()
 
+
+def env_float(name: str, default: float) -> float:
+    raw = os.getenv(name)
+    if raw in (None, ""):
+        return default
+    try:
+        return float(raw)
+    except Exception:
+        return default
+
+
+def env_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw in (None, ""):
+        return default
+    try:
+        return int(raw)
+    except Exception:
+        return default
+
+
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_PORT = env_int("SMTP_PORT", 587)
 EMAIL_FROM = os.getenv("EMAIL_FROM", "jamescullen2019@gmail.com")
 EMAIL_TO = os.getenv("EMAIL_TO", "jamescullen2019@gmail.com")
 EMAIL_USER = os.getenv("EMAIL_USER", EMAIL_FROM)
 EMAIL_PASS = os.getenv("EMAIL_PASS", "")
 
-TOTAL_BUDGET_USD = float(os.getenv("TOTAL_BUDGET_USD", "100"))
-TOP_MOVE_COUNT = int(os.getenv("TOP_MOVE_COUNT", "5"))
-RISK_BUCKET_COUNT = int(os.getenv("RISK_BUCKET_COUNT", "3"))
+TOTAL_BUDGET_USD = env_float("TOTAL_BUDGET_USD", 100.0)
+TOP_MOVE_COUNT = env_int("TOP_MOVE_COUNT", 5)
+RISK_BUCKET_COUNT = env_int("RISK_BUCKET_COUNT", 3)
+MAX_POSITION_PCT = env_float("MAX_POSITION_PCT", 0.40)
+RISKY_ALLOCATION_MULTIPLIER = env_float("RISKY_ALLOCATION_MULTIPLIER", 0.0)
+NO_TRADE_ALLOCATION_MULTIPLIER = env_float("NO_TRADE_ALLOCATION_MULTIPLIER", 0.0)
+CONFIDENCE_TARGET = env_float("CONFIDENCE_TARGET", 0.10)
+EDGE_TARGET = env_float("EDGE_TARGET", 0.10)
 
 LEGEND_ITEMS = [
     ("Eff Edge", "Net model edge after basic spread cost. Higher is better."),
@@ -149,6 +177,8 @@ def to_move(row: dict) -> dict:
         "effective_edge": edge,
         "confidence_score": conf,
         "spread": safe_float(row.get("spread")),
+        "yes_bid": safe_float(row.get("yes_bid")),
+        "yes_ask": safe_float(row.get("yes_ask")),
         "market_yes_mid": safe_float(row.get("market_yes_mid")),
         "fair_yes": safe_float(row.get("fair_yes")),
         "fair_no": safe_float(row.get("fair_no")),
@@ -233,12 +263,59 @@ def compute_allocations(moves: list[dict], total_budget: float) -> tuple[list[fl
     if not moves:
         return [], total_budget
 
-    total_score = sum(max(0.0, m["score"]) for m in moves)
-    if total_score <= 0:
-        allocations = [round(total_budget / len(moves), 2)] * len(moves)
-    else:
-        allocations = [round((max(0.0, m["score"]) / total_score) * total_budget, 2) for m in moves]
+    def clamp(value: float, lo: float, hi: float) -> float:
+        return max(lo, min(hi, value))
 
+    def raw_weight(move: dict) -> float:
+        base = max(0.0, move.get("score", 0.0))
+        conf = max(0.0, move.get("confidence_score") or 0.0)
+        edge = max(0.0, move.get("effective_edge") or 0.0)
+        hit_prob = move.get("hit_probability")
+        no_trade = bool(move.get("no_trade_flag", False))
+
+        conf_target = max(0.01, CONFIDENCE_TARGET)
+        edge_target = max(0.01, EDGE_TARGET)
+        conf_factor = clamp(conf / conf_target, 0.25, 1.5)
+        edge_factor = clamp(edge / edge_target, 0.50, 1.5)
+        weight = base * conf_factor * edge_factor
+
+        # Keep risky/no-trade ideas in the email, but don't size them by default.
+        if no_trade:
+            weight *= max(0.0, NO_TRADE_ALLOCATION_MULTIPLIER)
+        elif hit_prob is not None and hit_prob < 0.45:
+            weight *= max(0.0, RISKY_ALLOCATION_MULTIPLIER)
+
+        return max(0.0, weight)
+
+    weights = [raw_weight(m) for m in moves]
+    total_weight = sum(weights)
+    if total_weight <= 0:
+        zero_allocs = [0.0] * len(moves)
+        return zero_allocs, round(total_budget, 2)
+
+    amounts = [(w / total_weight) * total_budget for w in weights]
+    cap = max(0.0, min(1.0, MAX_POSITION_PCT)) * total_budget
+
+    if cap > 0:
+        for _ in range(10):
+            over = [i for i, a in enumerate(amounts) if a > cap + 1e-9]
+            if not over:
+                break
+            excess = 0.0
+            for i in over:
+                excess += amounts[i] - cap
+                amounts[i] = cap
+
+            under = [i for i, a in enumerate(amounts) if a < cap - 1e-9 and weights[i] > 0]
+            if not under or excess <= 0:
+                break
+            under_weight = sum(weights[i] for i in under)
+            if under_weight <= 0:
+                break
+            for i in under:
+                amounts[i] += excess * (weights[i] / under_weight)
+
+    allocations = [round(a, 2) for a in amounts]
     rounded_total = round(sum(allocations), 2)
     if allocations:
         allocations[-1] = round(allocations[-1] + (total_budget - rounded_total), 2)
@@ -252,6 +329,28 @@ def fmt(value, digits=3, na="n/a"):
     return f"{value:.{digits}f}"
 
 
+def build_execution_lines(summary: dict | None) -> list[str]:
+    if not summary:
+        return ["Execution: not run"]
+
+    mode = "disabled"
+    if summary.get("enabled"):
+        mode = "dry_run" if summary.get("dry_run") else "live"
+
+    lines = [
+        f"- Mode: {mode}",
+        f"- Attempted: {summary.get('attempted', 0)} | Eligible: {summary.get('eligible', 0)} | "
+        f"Placed: {summary.get('placed', 0)} | Failed: {summary.get('failed', 0)} | Skipped: {summary.get('skipped', 0)}",
+        f"- Intended notional: ${summary.get('intended_notional_usd', 0):.2f} | "
+        f"Placed notional: ${summary.get('placed_notional_usd', 0):.2f}",
+        f"- Ledger: {summary.get('ledger_path', 'n/a')}",
+    ]
+    notes = summary.get("notes") or []
+    if notes:
+        lines.append("- Notes: " + "; ".join(str(n) for n in notes))
+    return lines
+
+
 def build_text_email(
     metrics: dict,
     moves: list[dict],
@@ -261,6 +360,7 @@ def build_text_email(
     risk_buckets: dict[str, list[dict]],
     strategy_version: str,
     snapshot_path: str | None,
+    execution_summary: dict | None = None,
 ) -> str:
     lines = []
     lines.append("weather_kalshi daily trading brief")
@@ -276,6 +376,14 @@ def build_text_email(
     lines.append(f"- Markets passing filters: {metrics.get('passed', 'n/a')}")
     lines.append(f"- Safe recommended candidates: {metrics.get('safe_recommended', 'n/a')}")
     lines.append(f"- Selection mode: {selection_mode}")
+    lines.append(
+        "- Allocation policy: confidence-weighted "
+        f"(max_position_pct={MAX_POSITION_PCT:.0%}, risky_mult={RISKY_ALLOCATION_MULTIPLIER:.2f}, "
+        f"no_trade_mult={NO_TRADE_ALLOCATION_MULTIPLIER:.2f})"
+    )
+    lines.append("")
+    lines.append("Trade Execution")
+    lines.extend(build_execution_lines(execution_summary))
     lines.append("")
 
     if not moves:
@@ -362,6 +470,7 @@ def build_html_email(
     risk_buckets: dict[str, list[dict]],
     strategy_version: str,
     snapshot_path: str | None,
+    execution_summary: dict | None = None,
 ) -> str:
     html_parts = [
         '<html><body style="margin:0; padding:24px; background:#f3f4f6; font-family:Segoe UI,Arial,sans-serif; color:#111827;">',
@@ -393,6 +502,20 @@ def build_html_email(
             f'<div style="padding:8px 10px; border-radius:8px; background:#f0fdf4; font-size:13px;"><strong>Safe:</strong> {metrics.get("safe_recommended", "n/a")}</div>',
             f'<div style="padding:8px 10px; border-radius:8px; background:#fff7ed; font-size:13px;"><strong>Mode:</strong> {html_module.escape(selection_mode)}</div>',
             "</div>",
+            (
+                '<div style="margin-top:10px; font-size:12px; color:#4b5563;">'
+                f'Allocation policy: confidence-weighted '
+                f'(max_position_pct={MAX_POSITION_PCT:.0%}, risky_mult={RISKY_ALLOCATION_MULTIPLIER:.2f}, '
+                f'no_trade_mult={NO_TRADE_ALLOCATION_MULTIPLIER:.2f})'
+                "</div>"
+            ),
+            '<div style="margin-top:10px; padding:10px; border:1px solid #e5e7eb; border-radius:8px; background:#fafafa;">'
+            '<div style="font-size:13px; font-weight:700; margin-bottom:4px;">Trade execution</div>'
+            + "".join(
+                f'<div style="font-size:12px; color:#374151; line-height:1.4;">{html_module.escape(line.lstrip("- ").strip())}</div>'
+                for line in build_execution_lines(execution_summary)
+            )
+            + "</div>",
             f'<div style="margin-top:16px; font-size:16px; font-weight:700;">Top {len(moves)} moves</div>',
         ]
     )
@@ -532,12 +655,46 @@ if __name__ == "__main__":
             move["hit_probability"] = implied_hit_probability(move["best_side"], move["fair_yes"], move["fair_no"])
         risk_buckets = build_risk_buckets(rows, per_bucket=RISK_BUCKET_COUNT)
         allocations, _ = compute_allocations(top_moves, TOTAL_BUDGET_USD)
+        execution_summary = None
+        try:
+            execution_summary = execute_recommended_trades(top_moves, allocations, strategy_version)
+        except Exception as e:
+            print(f"[WARN] Trade execution step failed: {e}")
+            execution_summary = {
+                "enabled": True,
+                "dry_run": True,
+                "attempted": 0,
+                "eligible": 0,
+                "placed": 0,
+                "failed": 1,
+                "skipped": 0,
+                "intended_notional_usd": 0.0,
+                "placed_notional_usd": 0.0,
+                "ledger_path": "history/trade_ledger.csv",
+                "notes": [f"execution_exception={e}"],
+            }
 
         text_summary = build_text_email(
-            metrics, top_moves, allocations, selection_mode, csv_path, risk_buckets, strategy_version, snapshot_path
+            metrics,
+            top_moves,
+            allocations,
+            selection_mode,
+            csv_path,
+            risk_buckets,
+            strategy_version,
+            snapshot_path,
+            execution_summary=execution_summary,
         )
         html_summary = build_html_email(
-            metrics, top_moves, allocations, selection_mode, csv_path, risk_buckets, strategy_version, snapshot_path
+            metrics,
+            top_moves,
+            allocations,
+            selection_mode,
+            csv_path,
+            risk_buckets,
+            strategy_version,
+            snapshot_path,
+            execution_summary=execution_summary,
         )
 
         email_ok, missing_vars = validate_email_config()

@@ -37,6 +37,37 @@ jobs:
           TOTAL_BUDGET_USD: ${{ secrets.TOTAL_BUDGET_USD }}
           TOP_MOVE_COUNT: ${{ secrets.TOP_MOVE_COUNT }}
           RISK_BUCKET_COUNT: ${{ secrets.RISK_BUCKET_COUNT }}
+          MAX_POSITION_PCT: ${{ secrets.MAX_POSITION_PCT }}
+          RISKY_ALLOCATION_MULTIPLIER: ${{ secrets.RISKY_ALLOCATION_MULTIPLIER }}
+          NO_TRADE_ALLOCATION_MULTIPLIER: ${{ secrets.NO_TRADE_ALLOCATION_MULTIPLIER }}
+          CONFIDENCE_TARGET: ${{ secrets.CONFIDENCE_TARGET }}
+          EDGE_TARGET: ${{ secrets.EDGE_TARGET }}
+          TRADING_ENABLED: ${{ secrets.TRADING_ENABLED }}
+          TRADING_DRY_RUN: ${{ secrets.TRADING_DRY_RUN }}
+          TRADE_MAX_DAILY_NOTIONAL_USD: ${{ secrets.TRADE_MAX_DAILY_NOTIONAL_USD }}
+          TRADE_MAX_PER_TRADE_USD: ${{ secrets.TRADE_MAX_PER_TRADE_USD }}
+          TRADE_MIN_ORDER_NOTIONAL_USD: ${{ secrets.TRADE_MIN_ORDER_NOTIONAL_USD }}
+          TRADE_MAX_OPEN_ORDERS: ${{ secrets.TRADE_MAX_OPEN_ORDERS }}
+          TRADE_MIN_CONTRACTS: ${{ secrets.TRADE_MIN_CONTRACTS }}
+          TRADE_MIN_EDGE: ${{ secrets.TRADE_MIN_EDGE }}
+          TRADE_MIN_CONFIDENCE: ${{ secrets.TRADE_MIN_CONFIDENCE }}
+          TRADE_MAX_SPREAD: ${{ secrets.TRADE_MAX_SPREAD }}
+          TRADE_ALLOW_RISKY: ${{ secrets.TRADE_ALLOW_RISKY }}
+          TRADE_ALLOW_NO_TRADE_FLAG: ${{ secrets.TRADE_ALLOW_NO_TRADE_FLAG }}
+          TRADE_ALLOWED_MARKET_TYPES: ${{ secrets.TRADE_ALLOWED_MARKET_TYPES }}
+          TRADE_ORDER_TTL_SECONDS: ${{ secrets.TRADE_ORDER_TTL_SECONDS }}
+          TRADE_LEDGER_PATH: ${{ secrets.TRADE_LEDGER_PATH }}
+          TRADE_PRICE_IN_CENTS: ${{ secrets.TRADE_PRICE_IN_CENTS }}
+          KALSHI_BASE_URL: ${{ secrets.KALSHI_BASE_URL }}
+          KALSHI_TIMEOUT_SEC: ${{ secrets.KALSHI_TIMEOUT_SEC }}
+          KALSHI_ORDER_PATH: ${{ secrets.KALSHI_ORDER_PATH }}
+          KALSHI_KEY_ID: ${{ secrets.KALSHI_KEY_ID }}
+          KALSHI_PRIVATE_KEY: ${{ secrets.KALSHI_PRIVATE_KEY }}
+          KALSHI_PRIVATE_KEY_PATH: ${{ secrets.KALSHI_PRIVATE_KEY_PATH }}
+          KALSHI_BEARER_TOKEN: ${{ secrets.KALSHI_BEARER_TOKEN }}
+          KALSHI_API_KEY: ${{ secrets.KALSHI_API_KEY }}
+          KALSHI_AUTH_HEADER: ${{ secrets.KALSHI_AUTH_HEADER }}
+          KALSHI_AUTH_VALUE: ${{ secrets.KALSHI_AUTH_VALUE }}
         run: python daily_run.py
 
       - name: Upload outputs

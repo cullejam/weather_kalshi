@@ -92,15 +92,15 @@
     "timeZone": "America/Chicago",
     "radarStation": "KLOT",
     "astronomicalData": {
-      "sunrise": "2026-03-21T06:51:09-05:00",
-      "sunset": "2026-03-21T19:06:14-05:00",
-      "transit": "2026-03-21T12:58:42-05:00",
-      "civilTwilightBegin": "2026-03-21T06:24:44-05:00",
-      "civilTwilightEnd": "2026-03-21T19:32:40-05:00",
-      "nauticalTwilightBegin": "2026-03-21T05:52:03-05:00",
-      "nauticalTwilightEnd": "2026-03-21T20:05:21-05:00",
-      "astronomicalTwilightBegin": "2026-03-21T05:18:40-05:00",
-      "astronomicalTwilightEnd": "2026-03-21T20:38:44-05:00"
+      "sunrise": "2026-03-24T06:46:00-05:00",
+      "sunset": "2026-03-24T19:09:36-05:00",
+      "transit": "2026-03-24T12:57:48-05:00",
+      "civilTwilightBegin": "2026-03-24T06:19:30-05:00",
+      "civilTwilightEnd": "2026-03-24T19:36:05-05:00",
+      "nauticalTwilightBegin": "2026-03-24T05:46:40-05:00",
+      "nauticalTwilightEnd": "2026-03-24T20:08:56-05:00",
+      "astronomicalTwilightBegin": "2026-03-24T05:13:00-05:00",
+      "astronomicalTwilightEnd": "2026-03-24T20:42:36-05:00"
     },
     "nwr": {
       "transmitter": "KWO39",
