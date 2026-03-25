@@ -3,9 +3,9 @@ name: Daily Weather Kalshi Email
 on:
   workflow_dispatch:
   schedule:
-    # 8:00 AM America/New_York shifts between 12:00 UTC (EDT) and 13:00 UTC (EST).
-    - cron: "0 12 * * *"
-    - cron: "0 13 * * *"
+    # 7:35 AM America/New_York during DST (EDT).
+    # On 2026-03-25 (tomorrow), New York is on EDT, so this runs at 7:35 AM ET.
+    - cron: "35 11 * * *"
 
 jobs:
   run-daily:
@@ -16,35 +16,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Gate to 8:00 AM ET only
-        id: gate
-        run: |
-          python - <<'PY'
-          from datetime import datetime
-          from zoneinfo import ZoneInfo
-
-          now_et = datetime.now(ZoneInfo("America/New_York"))
-          run_ok = now_et.hour == 8
-          with open("/tmp/should_run.txt", "w", encoding="utf-8") as f:
-              f.write("true" if run_ok else "false")
-          print(f"ET now: {now_et.isoformat()} | should_run={run_ok}")
-          PY
-          echo "should_run=$(cat /tmp/should_run.txt)" >> "$GITHUB_OUTPUT"
-
       - name: Set up Python
-        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
-        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
       - name: Run daily pipeline + email
-        if: steps.gate.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch'
         env:
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
