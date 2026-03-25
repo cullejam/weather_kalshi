@@ -34,6 +34,23 @@ def _safe_int(v: Any, default: int = 0) -> int:
         return default
 
 
+def _parse_iso_dt(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    raw = value.strip()
+    if not raw:
+        return None
+    if raw.endswith("Z"):
+        raw = raw[:-1] + "+00:00"
+    try:
+        dt = datetime.fromisoformat(raw)
+    except Exception:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=UTC)
+    return dt.astimezone(UTC)
+
+
 @dataclass
 class ExecutionConfig:
     trading_enabled: bool
@@ -152,6 +169,10 @@ def _price_for_entry(move: dict[str, Any]) -> float | None:
 
 
 def _eligible_reason(move: dict[str, Any], cfg: ExecutionConfig) -> str | None:
+    close_time = _parse_iso_dt(str(move.get("close_time", "") or ""))
+    if close_time is not None and close_time <= datetime.now(UTC):
+        return "market_close_time_passed"
+
     market_type = str(move.get("market_type", "")).strip().lower()
     if cfg.allowed_market_types and market_type not in cfg.allowed_market_types:
         return f"market_type_blocked:{market_type}"
@@ -306,6 +327,23 @@ def execute_recommended_trades(
             summary["placed"] += 1
             summary["placed_notional_usd"] += notional
             remaining = max(0.0, remaining - notional)
+            _append_ledger(cfg.ledger_path, ledger_row)
+            continue
+
+        # Live safeguard: verify the market is still open immediately before placing.
+        try:
+            market = broker.get_market(ticker)
+            market_status = str(market.get("status", "")).strip().lower()
+            if market_status != "open":
+                ledger_row["status"] = "skipped"
+                ledger_row["reason"] = f"market_not_open:{market_status or 'unknown'}"
+                summary["skipped"] += 1
+                _append_ledger(cfg.ledger_path, ledger_row)
+                continue
+        except BrokerError as e:
+            ledger_row["status"] = "failed"
+            ledger_row["reason"] = f"market_lookup_failed:{str(e)[:180]}"
+            summary["failed"] += 1
             _append_ledger(cfg.ledger_path, ledger_row)
             continue
 
